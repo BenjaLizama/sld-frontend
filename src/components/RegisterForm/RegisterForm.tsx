@@ -3,13 +3,24 @@ import { register } from "../../services/auth.service";
 import { RegisterRequest } from "../../services/dto/registerRequest.dto";
 
 type FormState = {
+  // auth
   email: string;
   password: string;
   role: NonNullable<RegisterRequest["auth"]["role"]>;
+  // session
   deviceId: string;
   deviceName: string;
+  // parent profile
   educationLevel: string;
   isSupporter: boolean;
+  // student profile
+  medicConditions: string;
+  // teacher profile
+  biography: string;
+  office: string;
+  availabilityHours: string;
+  academicGrade: string;
+  // personal
   rut: string;
   firstName: string;
   middleName: string;
@@ -19,7 +30,7 @@ type FormState = {
   address: string;
   birthday: string;
   nationality: string;
-  genderId: string;
+  genderId: number;
 };
 
 const initialState: FormState = {
@@ -30,6 +41,11 @@ const initialState: FormState = {
   deviceName: "Frontend SLD",
   educationLevel: "",
   isSupporter: false,
+  medicConditions: "",
+  biography: "",
+  office: "",
+  availabilityHours: "",
+  academicGrade: "",
   rut: "",
   firstName: "",
   middleName: "",
@@ -38,8 +54,8 @@ const initialState: FormState = {
   phoneNumber: "",
   address: "",
   birthday: "",
-  nationality: "Chile",
-  genderId: "1",
+  nationality: "",
+  genderId: 1,
 };
 
 const roles: Array<FormState["role"]> = ["STUDENT", "TEACHER", "PARENT"];
@@ -54,26 +70,52 @@ const educationLevels = [
 
 export function RegisterForm() {
   const [form, setForm] = useState<FormState>(initialState);
-  const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">(
-    "idle",
-  );
+  const [status, setStatus] = useState<
+    "idle" | "loading" | "success" | "error"
+  >("idle");
   const [message, setMessage] = useState("");
 
-  const payload = useMemo<RegisterRequest>(
-    () => ({
+  const payload = useMemo<RegisterRequest>(() => {
+    let profile;
+
+    switch (form.role) {
+      case "PARENT":
+        profile = {
+          educationLevel: form.educationLevel,
+          isSupporter: form.isSupporter,
+        };
+        break;
+
+      case "STUDENT":
+        profile = {
+          medicConditions: form.medicConditions,
+        };
+        break;
+
+      case "TEACHER":
+        profile = {
+          biography: form.biography,
+          office: form.office,
+          availabilityHours: form.availabilityHours,
+          academicGrade: form.academicGrade,
+        };
+        break;
+    }
+
+    return {
       auth: {
         email: form.email,
         password: form.password,
         role: form.role,
       },
+
       session: {
         deviceId: form.deviceId,
         deviceName: form.deviceName,
       },
-      profile: {
-        educationLevel: form.educationLevel,
-        isSupporter: form.isSupporter,
-      },
+
+      profile,
+
       personal: {
         rut: form.rut,
         firstName: form.firstName,
@@ -86,33 +128,44 @@ export function RegisterForm() {
         nationality: form.nationality,
         genderId: Number(form.genderId),
       },
-    }),
-    [form],
-  );
+    };
+  }, [form]);
 
   const updateField =
     (field: keyof FormState) =>
-    (event: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+    (
+      event: ChangeEvent<
+        HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
+      >,
+    ) => {
       const value =
-        event.target instanceof HTMLInputElement && event.target.type === "checkbox"
+        event.target instanceof HTMLInputElement &&
+        event.target.type === "checkbox"
           ? event.target.checked
           : event.target.value;
 
-      setForm((current) => ({ ...current, [field]: value }));
+      setForm((current) => ({
+        ...current,
+        [field]: value,
+      }));
     };
-
   const submitRegister = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+
     setStatus("loading");
     setMessage("Registrando usuario...");
 
     try {
       await register(payload);
+
       setStatus("success");
       setMessage("Usuario registrado correctamente.");
     } catch (error) {
       const errorMessage =
-        error instanceof Error ? error.message : "No se pudo completar el registro.";
+        error instanceof Error
+          ? error.message
+          : "No se pudo completar el registro.";
+
       setStatus("error");
       setMessage(errorMessage);
     }
@@ -200,30 +253,85 @@ export function RegisterForm() {
         <fieldset>
           <legend>Perfil</legend>
           <div className="form-section">
-            <label>
-              Nivel educacional
-              <select
-                value={form.educationLevel}
-                onChange={updateField("educationLevel")}
-                required
-              >
-                <option value="">Selecciona una opcion</option>
-                {educationLevels.map((level) => (
-                  <option key={level} value={level}>
-                    {level}
-                  </option>
-                ))}
-              </select>
-            </label>
+            {form.role === "PARENT" && (
+              <>
+                <label>
+                  Nivel educacional
+                  <select
+                    value={form.educationLevel}
+                    onChange={updateField("educationLevel")}
+                    required
+                  >
+                    <option value="">Selecciona una opción</option>
 
-            <label className="checkbox-field">
-              <input
-                type="checkbox"
-                checked={form.isSupporter}
-                onChange={updateField("isSupporter")}
-              />
-              Es apoderado
-            </label>
+                    {educationLevels.map((level) => (
+                      <option key={level} value={level}>
+                        {level}
+                      </option>
+                    ))}
+                  </select>
+                </label>
+
+                <label className="checkbox-field">
+                  <input
+                    type="checkbox"
+                    checked={form.isSupporter}
+                    onChange={updateField("isSupporter")}
+                  />
+                  Es apoderado
+                </label>
+              </>
+            )}
+
+            {form.role === "STUDENT" && (
+              <label>
+                Condiciones médicas
+                <textarea
+                  value={form.medicConditions}
+                  onChange={updateField("medicConditions")}
+                  placeholder="Asma, alergias, etc."
+                />
+              </label>
+            )}
+
+            {form.role === "TEACHER" && (
+              <>
+                <label>
+                  Biografía
+                  <textarea
+                    value={form.biography}
+                    onChange={updateField("biography")}
+                  />
+                </label>
+
+                <label>
+                  Oficina
+                  <input
+                    type="text"
+                    value={form.office}
+                    onChange={updateField("office")}
+                  />
+                </label>
+
+                <label>
+                  Horario de atención
+                  <input
+                    type="text"
+                    value={form.availabilityHours}
+                    onChange={updateField("availabilityHours")}
+                  />
+                </label>
+
+                <label>
+                  Grado académico
+                  <input
+                    type="text"
+                    value={form.academicGrade}
+                    onChange={updateField("academicGrade")}
+                  />
+                </label>
+              </>
+            )}
           </div>
         </fieldset>
 
@@ -333,7 +441,11 @@ export function RegisterForm() {
 
             <label>
               Genero
-              <select value={form.genderId} onChange={updateField("genderId")} required>
+              <select
+                value={form.genderId}
+                onChange={updateField("genderId")}
+                required
+              >
                 <option value="1">Masculino</option>
                 <option value="2">Femenino</option>
               </select>

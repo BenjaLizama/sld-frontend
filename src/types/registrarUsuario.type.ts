@@ -11,10 +11,7 @@ export interface REGISTRAR_USUARIO_INTERFACE {
     nationality: string;
     genderId: 1 | 2;
   };
-  profile: {
-    educationLevel: string;
-    isSupporter: boolean;
-  };
+  profile: Profile;
 }
 
 export interface BffError {
@@ -26,3 +23,21 @@ export interface BffError {
   path: string;
   timestamp: number;
 }
+
+export interface ParentProfile {
+  educationLevel: string;
+  isSupporter: boolean;
+}
+
+export interface StudentProfile {
+  medicConditions: string;
+}
+
+export interface TeacherProfile {
+  biography: string;
+  office: string;
+  availabilityHours: string;
+  academicGrade: string;
+}
+
+export type Profile = ParentProfile | StudentProfile | TeacherProfile;
