@@ -1,36 +1,12 @@
-import { AuthCard } from "./components/AuthCard/AuthCard";
+import { AuthCard, LoggedUser } from "./components/AuthCard/AuthCard";
+import { RegisterForm } from "./components/RegisterForm/RegisterForm";
 import { ServiceSummary } from "./components/ServiceSummary/ServiceSummary";
 import { StudentWidget } from "./components/StudentWidget/StudentWidget";
-import { REGISTRAR_USUARIO } from "./services/register";
-import { REGISTRAR_USUARIO_INTERFACE } from "./types/registrarUsuario.type";
+import { UserList } from "./components/UserList/UserList";
+import { useState } from "react";
 
 export default function App() {
-  const NUEVO_USUARIO: REGISTRAR_USUARIO_INTERFACE = {
-    auth: {
-      email: "apoderado3.valido@test.com",
-      password: "Password123!",
-      role: "ROLE_PARENT",
-    },
-    session: {
-      deviceId: "127.0.0.1",
-      deviceName: "Device",
-    },
-    profile: {
-      educationLevel: "Universitaria",
-      isSupporter: true,
-    },
-    personal: {
-      address: "...",
-      birthday: "1990-05-12",
-      firstName: "Juan",
-      lastName: "Pérez",
-      phoneNumber: "+569...",
-      genderId: 1,
-      nationality: "Chilena",
-      rut: "14.345.678-1",
-    },
-  };
-  console.log(REGISTRAR_USUARIO(NUEVO_USUARIO));
+  const [loggedUser, setLoggedUser] = useState<LoggedUser | null>(null);
 
   return (
     <main className="app-shell">
@@ -39,14 +15,30 @@ export default function App() {
           <p className="eyebrow">Colegio Bernardo O&apos;Higgins</p>
           <h1>Libro de Clases Digital</h1>
         </div>
-        <span className="status-pill">React + TypeScript</span>
+
+        <div className="topbar-actions">
+          {loggedUser ? (
+            <aside className="session-card" aria-label="Usuario conectado">
+              <span>Sesion activa</span>
+              <strong>
+                {loggedUser.firstName} {loggedUser.lastName}
+              </strong>
+              <small>{loggedUser.role}</small>
+            </aside>
+          ) : null}
+          <span className="status-pill">React + TypeScript</span>
+        </div>
       </header>
 
+      <RegisterForm />
+
       <section className="layout-grid" aria-label="Componentes principales">
-        <AuthCard />
+        <AuthCard onLogin={setLoggedUser} />
         <ServiceSummary />
         <StudentWidget />
       </section>
+
+      <UserList />
     </main>
   );
 }

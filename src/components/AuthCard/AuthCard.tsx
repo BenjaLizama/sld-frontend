@@ -1,4 +1,36 @@
-export function AuthCard() {
+import { useState } from "react";
+
+export type LoggedUser = {
+  firstName: string;
+  lastName: string;
+  role: "STUDENT" | "TEACHER" | "PARENT";
+};
+
+type AuthCardProps = {
+  onLogin?: (user: LoggedUser) => void;
+};
+
+const resolveUserByEmail = (email: string): LoggedUser => {
+  const normalizedEmail = email.trim().toLowerCase();
+
+  if (normalizedEmail.includes("docente")) {
+    return { firstName: "Matias", lastName: "Herrera", role: "TEACHER" };
+  }
+
+  if (normalizedEmail.includes("apoderado")) {
+    return { firstName: "Carolina", lastName: "Munoz", role: "PARENT" };
+  }
+
+  return { firstName: "Benjamin", lastName: "Lizama", role: "STUDENT" };
+};
+
+export function AuthCard({ onLogin }: AuthCardProps) {
+  const [email, setEmail] = useState("");
+
+  const handleLogin = () => {
+    onLogin?.(resolveUserByEmail(email));
+  };
+
   return (
     <section className="panel">
       <div className="panel-heading">
@@ -12,13 +44,21 @@ export function AuthCard() {
       <form className="form-grid">
         <label>
           Correo
-          <input type="email" placeholder="usuario@colegio.cl" autoComplete="email" />
+          <input
+            type="email"
+            value={email}
+            onChange={(event) => setEmail(event.target.value)}
+            placeholder="usuario@colegio.cl"
+            autoComplete="email"
+          />
         </label>
         <label>
           Contrasena
           <input type="password" placeholder="••••••••" autoComplete="current-password" />
         </label>
-        <button type="button">Iniciar sesion</button>
+        <button type="button" onClick={handleLogin}>
+          Iniciar sesion
+        </button>
       </form>
     </section>
   );
