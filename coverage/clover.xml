@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<coverage generated="1781571498615" clover="3.2.0">
+  <project timestamp="1781571498615" name="All files">
+    <metrics statements="24" coveredstatements="24" conditionals="14" coveredconditionals="12" methods="7" coveredmethods="7" elements="45" coveredelements="43" complexity="0" loc="24" ncloc="24" packages="4" files="4" classes="4"/>
+    <package name="components.AuthCard">
+      <metrics statements="2" coveredstatements="2" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="1"/>
+      <file name="AuthCard.tsx" path="/home/benja/workspace/sld-frontend/src/components/AuthCard/AuthCard.tsx">
+        <metrics statements="2" coveredstatements="2" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="1"/>
+        <line num="1" count="1" type="stmt"/>
+        <line num="2" count="3" type="stmt"/>
+      </file>
+    </package>
+    <package name="components.ServiceSummary">
+      <metrics statements="4" coveredstatements="4" conditionals="0" coveredconditionals="0" methods="2" coveredmethods="2"/>
+      <file name="ServiceSummary.tsx" path="/home/benja/workspace/sld-frontend/src/components/ServiceSummary/ServiceSummary.tsx">
+        <metrics statements="4" coveredstatements="4" conditionals="0" coveredconditionals="0" methods="2" coveredmethods="2"/>
+        <line num="7" count="1" type="stmt"/>
+        <line num="13" count="1" type="stmt"/>
+        <line num="14" count="4" type="stmt"/>
+        <line num="26" count="12" type="stmt"/>
+      </file>
+    </package>
+    <package name="components.StudentWidget">
+      <metrics statements="4" coveredstatements="4" conditionals="0" coveredconditionals="0" methods="2" coveredmethods="2"/>
+      <file name="StudentWidget.tsx" path="/home/benja/workspace/sld-frontend/src/components/StudentWidget/StudentWidget.tsx">
+        <metrics statements="4" coveredstatements="4" conditionals="0" coveredconditionals="0" methods="2" coveredmethods="2"/>
+        <line num="6" count="1" type="stmt"/>
+        <line num="12" count="1" type="stmt"/>
+        <line num="13" count="3" type="stmt"/>
+        <line num="27" count="9" type="stmt"/>
+      </file>
+    </package>
+    <package name="services">
+      <metrics statements="14" coveredstatements="14" conditionals="14" coveredconditionals="12" methods="2" coveredmethods="2"/>
+      <file name="register.ts" path="/home/benja/workspace/sld-frontend/src/services/register.ts">
+        <metrics statements="14" coveredstatements="14" conditionals="14" coveredconditionals="12" methods="2" coveredmethods="2"/>
+        <line num="4" count="1" type="stmt"/>
+        <line num="6" count="1" type="stmt"/>
+        <line num="9" count="4" type="stmt"/>
+        <line num="10" count="4" type="stmt"/>
+        <line num="19" count="3" type="cond" truecount="2" falsecount="0"/>
+        <line num="21" count="2" type="stmt"/>
+        <line num="24" count="2" type="cond" truecount="4" falsecount="0"/>
+        <line num="25" count="1" type="stmt"/>
+        <line num="29" count="1" type="stmt"/>
+        <line num="42" count="1" type="stmt"/>
+        <line num="43" count="1" type="stmt"/>
+        <line num="46" count="3" type="cond" truecount="4" falsecount="0"/>
+        <line num="47" count="2" type="stmt"/>
+        <line num="52" count="1" type="stmt"/>
+      </file>
+    </package>
+  </project>
+</coverage>

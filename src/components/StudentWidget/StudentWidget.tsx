@@ -16,7 +16,9 @@ export function StudentWidget() {
         <span className="icon">CL</span>
         <div>
           <h2>Resumen academico</h2>
-          <p>Componente visual no conectado, preparado para integracion futura.</p>
+          <p>
+            Componente visual no conectado, preparado para integracion futura.
+          </p>
         </div>
       </div>
 

@@ -1,6 +1,6 @@
-import { AuthCard } from "./components/AuthCard";
-import { ServiceSummary } from "./components/ServiceSummary";
-import { StudentWidget } from "./components/StudentWidget";
+import { AuthCard } from "./components/AuthCard/AuthCard";
+import { ServiceSummary } from "./components/ServiceSummary/ServiceSummary";
+import { StudentWidget } from "./components/StudentWidget/StudentWidget";
 import { REGISTRAR_USUARIO } from "./services/register";
 import { REGISTRAR_USUARIO_INTERFACE } from "./types/registrarUsuario.type";
 
