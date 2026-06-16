@@ -1,6 +1,6 @@
 import "@testing-library/jest-dom";
 
-import { render, screen } from "@testing-library/react";
+import { fireEvent, render, screen } from "@testing-library/react";
 import { AuthCard } from "./AuthCard";
 
 describe("Componente AuthCard", () => {
@@ -41,5 +41,61 @@ describe("Componente AuthCard", () => {
     });
     expect(submitButton).toBeInTheDocument();
     expect(submitButton).toHaveAttribute("type", "button");
+  });
+
+  test("notifica un usuario estudiante por defecto al iniciar sesión", () => {
+    const onLogin = jest.fn();
+    render(<AuthCard onLogin={onLogin} />);
+
+    fireEvent.change(screen.getByLabelText(/correo/i), {
+      target: { value: " alumno@colegio.cl " },
+    });
+    fireEvent.click(screen.getByRole("button", { name: /iniciar sesion/i }));
+
+    expect(onLogin).toHaveBeenCalledWith({
+      firstName: "Benjamin",
+      lastName: "Lizama",
+      role: "STUDENT",
+    });
+  });
+
+  test("detecta correos de docentes sin depender de mayúsculas o espacios", () => {
+    const onLogin = jest.fn();
+    render(<AuthCard onLogin={onLogin} />);
+
+    fireEvent.change(screen.getByLabelText(/correo/i), {
+      target: { value: " DOCENTE.historia@colegio.cl " },
+    });
+    fireEvent.click(screen.getByRole("button", { name: /iniciar sesion/i }));
+
+    expect(onLogin).toHaveBeenCalledWith({
+      firstName: "Matias",
+      lastName: "Herrera",
+      role: "TEACHER",
+    });
+  });
+
+  test("detecta correos de apoderados", () => {
+    const onLogin = jest.fn();
+    render(<AuthCard onLogin={onLogin} />);
+
+    fireEvent.change(screen.getByLabelText(/correo/i), {
+      target: { value: "apoderado.valido@colegio.cl" },
+    });
+    fireEvent.click(screen.getByRole("button", { name: /iniciar sesion/i }));
+
+    expect(onLogin).toHaveBeenCalledWith({
+      firstName: "Carolina",
+      lastName: "Munoz",
+      role: "PARENT",
+    });
+  });
+
+  test("permite iniciar sesión aunque no se entregue callback", () => {
+    render(<AuthCard />);
+
+    expect(() => {
+      fireEvent.click(screen.getByRole("button", { name: /iniciar sesion/i }));
+    }).not.toThrow();
   });
 });

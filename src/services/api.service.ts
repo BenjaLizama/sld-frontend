@@ -1,5 +1,8 @@
-const BACKEND_IP = import.meta.env.VITE_BACKEND_URL;
-export const BFF_API = `http://${BACKEND_IP}:8082`;
+declare const __VITE_BACKEND_URL__: string | undefined;
+
+const BACKEND_IP =
+  typeof __VITE_BACKEND_URL__ === "string" ? __VITE_BACKEND_URL__ : "";
+export const BFF_API = BACKEND_IP ? `http://${BACKEND_IP}:8082` : "";
 
 export const API = {
   auth: `${BFF_API}/api/v1/registro`,
