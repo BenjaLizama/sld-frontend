@@ -1,5 +1,5 @@
 import { useState } from "react";
-
+import { login } from "../../services/auth.service";
 export type LoggedUser = {
   firstName: string;
   lastName: string;
@@ -7,7 +7,7 @@ export type LoggedUser = {
 };
 
 type AuthCardProps = {
-  onLogin?: (user: LoggedUser) => void;
+  onLogin: (user: LoggedUser) => void;
 };
 
 const resolveUserByEmail = (email: string): LoggedUser => {
@@ -26,9 +26,33 @@ const resolveUserByEmail = (email: string): LoggedUser => {
 
 export function AuthCard({ onLogin }: AuthCardProps) {
   const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
-  const handleLogin = () => {
-    onLogin?.(resolveUserByEmail(email));
+  const handleLogin = async () => {
+    try {
+      const response = await login({
+        login: {
+          identifier: email,
+          password,
+          provider: "LOCAL",
+        },
+
+        session: {
+          deviceId: crypto.randomUUID(),
+          deviceName: "WEB BROWSER",
+        },
+      });
+
+      localStorage.setItem("accessToken", response.accessToken);
+
+      localStorage.setItem("refreshToken", response.refreshToken);
+
+      console.log("Login OK");
+    } catch (error) {
+      console.error(error);
+
+      alert("Credenciales incorrectas");
+    }
   };
 
   return (
@@ -54,7 +78,13 @@ export function AuthCard({ onLogin }: AuthCardProps) {
         </label>
         <label>
           Contrasena
-          <input type="password" placeholder="••••••••" autoComplete="current-password" />
+          <input
+            type="password"
+            value={password}
+            onChange={(event) => setPassword(event.target.value)}
+            placeholder="••••••••"
+            autoComplete="current-password"
+          />
         </label>
         <button type="button" onClick={handleLogin}>
           Iniciar sesion
