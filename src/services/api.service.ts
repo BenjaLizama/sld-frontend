@@ -6,6 +6,8 @@ export const BFF_API = BACKEND_IP ? `http://${BACKEND_IP}:8082` : "";
 
 export const API = {
   auth: `${BFF_API}/api/v1/registro`,
+  login: `${BFF_API}/api/v1/login`,
+  user: `${BFF_API}/api/v1/user`,
 };
 
 export const handleResponse = async (response: Response) => {

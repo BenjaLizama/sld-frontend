@@ -1,3 +1,5 @@
+import { Profile } from "../../types/registrarUsuario.type";
+
 export interface RegisterRequest {
   auth: {
     email: string;
@@ -8,7 +10,7 @@ export interface RegisterRequest {
     deviceId: string;
     deviceName: string;
   };
-  profile: any;
+  profile: Profile;
   personal: {
     rut: string;
     firstName: string;
