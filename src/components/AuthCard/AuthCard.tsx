@@ -38,7 +38,7 @@ export function AuthCard({ onLogin }: AuthCardProps) {
         },
 
         session: {
-          deviceId: crypto.randomUUID(),
+          deviceId: typeof crypto.randomUUID === 'function' ? crypto.randomUUID() : 'test-device-id',
           deviceName: "WEB BROWSER",
         },
       });
@@ -48,6 +48,10 @@ export function AuthCard({ onLogin }: AuthCardProps) {
       localStorage.setItem("refreshToken", response.refreshToken);
 
       console.log("Login OK");
+
+      if (onLogin) {
+        onLogin(resolveUserByEmail(email));
+      }
     } catch (error) {
       console.error(error);
 
