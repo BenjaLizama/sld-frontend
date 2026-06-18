@@ -30,8 +30,14 @@ export const handleResponse = async (response: Response) => {
     // 3. Determinamos cuál será el mensaje final del error
     let finalMessage = "Error desconocido";
 
-    if (isJson && (errorData.message || errorData.mensaje)) {
-      finalMessage = errorData.message || errorData.mensaje;
+    if (isJson && (errorData.message || errorData.mensaje || errorData.error)) {
+      const bffMessage = errorData.message || errorData.mensaje || errorData.error;
+      
+      if (typeof bffMessage === 'string' && bffMessage.toLowerCase().includes("no disponible")) {
+        finalMessage = "Estamos teniendo problemas técnicos momentáneos, por favor reintenta en unos segundos";
+      } else {
+        finalMessage = bffMessage;
+      }
     } else if (errorData.rawText && errorData.rawText.trim() !== "") {
       finalMessage = `Respuesta cruda del servidor: ${errorData.rawText}`;
     } else if (response.statusText) {

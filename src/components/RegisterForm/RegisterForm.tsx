@@ -168,6 +168,7 @@ export function RegisterForm() {
 
       setStatus("error");
       setMessage(errorMessage);
+      alert(errorMessage);
     }
   };
 
