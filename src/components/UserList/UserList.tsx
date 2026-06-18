@@ -52,25 +52,33 @@ export function UserList() {
             </tr>
           </thead>
           <tbody>
-            {users.map((user) => (
-              <tr key={user.email}>
-                <td>
-                  <strong>{user.fullName}</strong>
-                  <span>{user.email}</span>
-                </td>
-                <td>{user.rut}</td>
-                <td>{user.gender}</td>
-                <td>
-                  <strong>{user.phoneNumber}</strong>
-                  <span>{user.address}</span>
-                </td>
-                <td>{formatDate(user.birthday)}</td>
-                <td>
-                  <strong>{user.nationality}</strong>
-                  <span>{formatDate(user.creationDate)}</span>
+            {users.length > 0 ? (
+              users.map((user) => (
+                <tr key={user.email}>
+                  <td>
+                    <strong>{user.fullName}</strong>
+                    <span>{user.email}</span>
+                  </td>
+                  <td>{user.rut}</td>
+                  <td>{user.gender}</td>
+                  <td>
+                    <strong>{user.phoneNumber}</strong>
+                    <span>{user.address}</span>
+                  </td>
+                  <td>{formatDate(user.birthday)}</td>
+                  <td>
+                    <strong>{user.nationality}</strong>
+                    <span>{formatDate(user.creationDate)}</span>
+                  </td>
+                </tr>
+              ))
+            ) : (
+              <tr>
+                <td colSpan={6} style={{ textAlign: "center", padding: "2rem", color: "#666" }}>
+                  No hay usuarios disponibles o el servicio de perfiles no pudo cargar la información.
                 </td>
               </tr>
-            ))}
+            )}
           </tbody>
         </table>
       </div>

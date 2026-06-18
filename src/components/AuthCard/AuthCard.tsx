@@ -54,8 +54,8 @@ export function AuthCard({ onLogin }: AuthCardProps) {
       }
     } catch (error) {
       console.error(error);
-
-      alert("Credenciales incorrectas");
+      const errorMessage = error instanceof Error ? error.message : "Credenciales incorrectas";
+      alert(errorMessage);
     }
   };
 
