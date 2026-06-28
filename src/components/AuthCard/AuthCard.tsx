@@ -1,62 +1,16 @@
 import { useState } from "react";
-import { login } from "../../services/auth.service";
-export type LoggedUser = {
-  firstName: string;
-  lastName: string;
-  role: "STUDENT" | "TEACHER" | "PARENT";
-};
+import { useNavigate } from "react-router-dom";
 
-type AuthCardProps = {
-  onLogin: (user: LoggedUser) => void;
-};
-
-const resolveUserByEmail = (email: string): LoggedUser => {
-  const normalizedEmail = email.trim().toLowerCase();
-
-  if (normalizedEmail.includes("docente")) {
-    return { firstName: "Matias", lastName: "Herrera", role: "TEACHER" };
-  }
-
-  if (normalizedEmail.includes("apoderado")) {
-    return { firstName: "Carolina", lastName: "Munoz", role: "PARENT" };
-  }
-
-  return { firstName: "Benjamin", lastName: "Lizama", role: "STUDENT" };
-};
-
-export function AuthCard({ onLogin }: AuthCardProps) {
+export function AuthCard() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const navigate = useNavigate();
 
-  const handleLogin = async () => {
-    try {
-      const response = await login({
-        login: {
-          identifier: email,
-          password,
-          provider: "LOCAL",
-        },
-
-        session: {
-          deviceId: typeof crypto.randomUUID === 'function' ? crypto.randomUUID() : 'test-device-id',
-          deviceName: "WEB BROWSER",
-        },
-      });
-
-      localStorage.setItem("accessToken", response.accessToken);
-
-      localStorage.setItem("refreshToken", response.refreshToken);
-
-      console.log("Login OK");
-
-      if (onLogin) {
-        onLogin(resolveUserByEmail(email));
-      }
-    } catch (error) {
-      console.error(error);
-      const errorMessage = error instanceof Error ? error.message : "Credenciales incorrectas";
-      alert(errorMessage);
-    }
+  /* Si el usuario es un adminstrador deberia viajar hacia el dashboard de administrador. */
+  const handleLogin = () => {
+    alert("Se pulso iniciar sesion!");
+    navigate("/admin");
+    return;
   };
 
   return (

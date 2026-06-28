@@ -224,7 +224,7 @@ export function RegisterForm() {
           </div>
         </fieldset>
 
-        <fieldset>
+        {/* <fieldset>
           <legend>Sesion</legend>
           <div className="form-section">
             <label>
@@ -249,7 +249,7 @@ export function RegisterForm() {
               />
             </label>
           </div>
-        </fieldset>
+        </fieldset> */}
 
         <fieldset>
           <legend>Perfil</legend>
@@ -435,7 +435,7 @@ export function RegisterForm() {
                 type="text"
                 value={form.nationality}
                 onChange={updateField("nationality")}
-                placeholder="Chile"
+                placeholder="Chilena"
                 required
               />
             </label>
