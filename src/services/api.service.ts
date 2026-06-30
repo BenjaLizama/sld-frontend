@@ -8,6 +8,7 @@ export const API = {
   auth: `${BFF_API}/api/v1/registro`,
   login: `${BFF_API}/api/v1/login`,
   user: `${BFF_API}/api/v1/user`,
+  grades: `${BFF_API}/api/v1/bff/grades`,
 };
 
 export const handleResponse = async (response: Response) => {
