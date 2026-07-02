@@ -9,6 +9,7 @@ export const API = {
   login: `${BFF_API}/api/v1/login`,
   user: `${BFF_API}/api/v1/user`,
   grades: `${BFF_API}/api/v1/bff/grades`,
+  attendance: `${BFF_API}/api/v1/bff/attendance`,
 };
 
 export const handleResponse = async (response: Response) => {
@@ -32,10 +33,15 @@ export const handleResponse = async (response: Response) => {
     let finalMessage = "Error desconocido";
 
     if (isJson && (errorData.message || errorData.mensaje || errorData.error)) {
-      const bffMessage = errorData.message || errorData.mensaje || errorData.error;
-      
-      if (typeof bffMessage === 'string' && bffMessage.toLowerCase().includes("no disponible")) {
-        finalMessage = "Estamos teniendo problemas técnicos momentáneos, por favor reintenta en unos segundos";
+      const bffMessage =
+        errorData.message || errorData.mensaje || errorData.error;
+
+      if (
+        typeof bffMessage === "string" &&
+        bffMessage.toLowerCase().includes("no disponible")
+      ) {
+        finalMessage =
+          "Estamos teniendo problemas técnicos momentáneos, por favor reintenta en unos segundos";
       } else {
         finalMessage = bffMessage;
       }

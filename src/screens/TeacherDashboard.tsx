@@ -3,7 +3,9 @@ import { StudentGradeList } from "../components/StudentGradeList/StudentGradeLis
 const TeacherDashboard: React.FC = () => {
   return (
     <div>
-      <StudentGradeList />
+      <div>
+        <StudentGradeList />
+      </div>
     </div>
   );
 };
