@@ -10,6 +10,8 @@ export const API = {
   user: `${BFF_API}/api/v1/user`,
   grades: `${BFF_API}/api/v1/bff/grades`,
   attendance: `${BFF_API}/api/v1/bff/attendance`,
+  familiesLink: `${BFF_API}/api/v1/bff/families/link`,
+  parentSummary: `${BFF_API}/api/v1/bff/families/apoderado`,
 };
 
 export const handleResponse = async (response: Response) => {
