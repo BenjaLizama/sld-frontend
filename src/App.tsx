@@ -34,10 +34,10 @@ function App() {
             />
 
             {/* Rutas protegidas */}
-            <Route path="/registrar-usuarios" element={<RegisterForm />} />
-            <Route
-              element={<ProtectedRoute allowedRole="ROLE_STUDENT" />}
-            ></Route>
+
+            <Route element={<ProtectedRoute allowedRole="ROLE_ADMIN" />}>
+              <Route path="/registrar-usuarios" element={<RegisterForm />} />
+            </Route>
 
             <Route element={<ProtectedRoute allowedRole="ROLE_TEACHER" />}>
               <Route path="/asistencia" element={<AttendanceManager />} />
