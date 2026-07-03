@@ -117,6 +117,22 @@ export function RegisterForm() {
     cargarUsuarios();
   }, []);
 
+  const validacionesPassword = useMemo(() => {
+    const p = form.password;
+    return {
+      minMin_8: p.length >= 8,
+      tieneNumero: /[0-9]/.test(p),
+      tieneMayuscula: /[A-Z]/.test(p),
+      tieneMinuscula: /[a-z]/.test(p),
+      // Mapea los caracteres especiales exactos de tu backend (@, #, $, %, ^, &, +, =, !, y el punto .)
+      tieneEspecial: /[@#$%^&+=!\.]/.test(p),
+    };
+  }, [form.password]);
+
+  const passwordEsValida = useMemo(() => {
+    return Object.values(validacionesPassword).every(Boolean);
+  }, [validacionesPassword]);
+
   const payload = useMemo<RegisterRequest>(() => {
     let profile;
     switch (form.role) {
@@ -266,7 +282,14 @@ export function RegisterForm() {
                   required
                 />
               </label>
-              <label>
+              <label
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  gap: "4px",
+                  position: "relative",
+                }}
+              >
                 Contraseña <RequiredStar />
                 <input
                   type="password"
@@ -276,7 +299,116 @@ export function RegisterForm() {
                   autoComplete="new-password"
                   minLength={8}
                   required
+                  style={{
+                    borderColor: form.password
+                      ? passwordEsValida
+                        ? "#10b981"
+                        : "#ef4444"
+                      : "#ccc",
+                    transition: "border-color 0.2s",
+                    width: "100%",
+                    boxSizing: "border-box",
+                  }}
                 />
+                {/* 🔍 Aparece solo si hay texto Y la contraseña aún NO es válida */}
+                {form.password && !passwordEsValida && (
+                  <div
+                    style={{
+                      position: "absolute",
+                      top: "100%",
+                      left: 0,
+                      zIndex: 50,
+                      marginTop: "4px",
+                      width: "100%",
+                      minWidth: "260px",
+                      padding: "12px",
+                      backgroundColor: "#ffffff",
+                      border: "1px solid #cbd5e1",
+                      borderRadius: "6px",
+                      fontSize: "12px",
+                      display: "flex",
+                      flexDirection: "column",
+                      gap: "6px",
+                      boxShadow:
+                        "0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)",
+                    }}
+                  >
+                    <span
+                      style={{
+                        fontWeight: "bold",
+                        color: "#475569",
+                        marginBottom: "2px",
+                      }}
+                    >
+                      Requisitos de seguridad obligatorios:
+                    </span>
+                    <span
+                      style={{
+                        color: validacionesPassword.minMin_8
+                          ? "#10b981"
+                          : "#ef4444",
+                        display: "flex",
+                        alignItems: "center",
+                        gap: "6px",
+                      }}
+                    >
+                      {validacionesPassword.minMin_8 ? "✓" : "✗"} Al menos 8
+                      caracteres (Llevas {form.password.length})
+                    </span>
+                    <span
+                      style={{
+                        color: validacionesPassword.tieneMayuscula
+                          ? "#10b981"
+                          : "#ef4444",
+                        display: "flex",
+                        alignItems: "center",
+                        gap: "6px",
+                      }}
+                    >
+                      {validacionesPassword.tieneMayuscula ? "✓" : "✗"} Una
+                      letra mayúscula (A-Z)
+                    </span>
+                    <span
+                      style={{
+                        color: validacionesPassword.tieneMinuscula
+                          ? "#10b981"
+                          : "#ef4444",
+                        display: "flex",
+                        alignItems: "center",
+                        gap: "6px",
+                      }}
+                    >
+                      {validacionesPassword.tieneMinuscula ? "✓" : "✗"} Una
+                      letra minúscula (a-z)
+                    </span>
+                    <span
+                      style={{
+                        color: validacionesPassword.tieneNumero
+                          ? "#10b981"
+                          : "#ef4444",
+                        display: "flex",
+                        alignItems: "center",
+                        gap: "6px",
+                      }}
+                    >
+                      {validacionesPassword.tieneNumero ? "✓" : "✗"} Al menos un
+                      número (0-9)
+                    </span>
+                    <span
+                      style={{
+                        color: validacionesPassword.tieneEspecial
+                          ? "#10b981"
+                          : "#ef4444",
+                        display: "flex",
+                        alignItems: "center",
+                        gap: "6px",
+                      }}
+                    >
+                      {validacionesPassword.tieneEspecial ? "✓" : "✗"} Un
+                      carácter especial (@, #, $, %, ^, &, +, =, !, .)
+                    </span>
+                  </div>
+                )}
               </label>
               <label>
                 Rol <RequiredStar />
