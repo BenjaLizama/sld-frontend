@@ -8,4 +8,5 @@ export interface UserSummaryDTO {
   rut: string;
   phoneNumber: string;
   birthday: string;
+  role: "STUDENT" | "TEACHER" | "PARENT";
 }

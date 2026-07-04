@@ -33,7 +33,6 @@ export const attendanceService = {
     return response.data;
   },
 
-  // Agrega este método a tu objeto attendanceService existente
   passAttendanceWithDate: async (
     studentId: string,
     dateStr: string,
